@@ -1,10 +1,19 @@
+# Hacked-up version of Mellort's Reddit API
+# https://github.com/mellort/reddit_api
+#
+# Added semi-broken create Submission support, just enough to add a link and
+# that's it. - Chris D
 import urllib
 import urllib2
-import simplejson
 import cookielib
 import re
 import time
 from memoize import Memoize
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 DEFAULT_CONTENT_LIMIT = 25
 
@@ -159,7 +168,7 @@ class Reddit(RedditObject):
                                 encoded_params,
                                 REDDIT_USER_AGENT)
         json_data = self._urlopen(request).read()
-        data = simplejson.loads(json_data)
+        data = json.loads(json_data)
 
         return data
 
@@ -626,7 +635,7 @@ class Submission(RedditObject):
             subreddit_name="serendipity"
         )
 
-	response = simplejson.loads(response)
+	response = json.loads(response)
 	submission_url = response['jquery'][-1:][-1:][-1:][-1:][0][3][0]
 	submission_id = re.sub(r'http://www.reddit.com/r/Serendipity/comments/([^/]+).*', r'\1', submission_url)
 	self.id   = submission_id

@@ -5,50 +5,49 @@ import re
 import time
 
 try:
-    from settings import REDDIT_LOGIN, REDDIT_PASSWORD
+    import settings
 except:
-    print "Unable to pull settings from settings.py - make sure you create this file with two constances, REDDIT_LOGIN and REDDIT_PASSWORD."
-    return
+    exit("Unable to pull settings from settings.py.\n" + 
+         "Make sure you create this file as a copy of settings.template.py.")
 
+# Pull all of the subreddits from subreddits.py that fit our criteria.
 serendipitous_subreddits = []
 for subreddit in subreddits:
-    if subreddit['subscribers'] > 1000:
+    if subreddit['subscribers'] > settings.MINIMUM_SUBSCRIBER_COUNT:
         serendipitous_subreddits.append(subreddit)
-        
-subreddit = random.choice(serendipitous_subreddits)
 
+# Pick out the random subreddit to pull a link form    
+subreddit      = random.choice(serendipitous_subreddits)
 subreddit_slug = re.sub(r'http://www\.reddit\.com/r/([^/]+)/', r'\1', subreddit['uri'])
 
-
+# Get the top stories from that subreddit, and pick a random one
 r = reddit.Reddit()
-r.login(REDDIT_LOGIN,REDDIT_PASSWORD)
-stories = r.get_subreddit(subreddit_slug).get_hot(limit=5)
+r.login(settings.REDDIT_LOGIN, settings.REDDIT_PASSWORD)
+stories = r.get_subreddit(subreddit_slug).get_hot(limit=settings.HOT_STORY_COUNT)
+story   = random.choice(stories)
 
-story = random.choice(stories)
-
-print(subreddit)
-print(story)
-
-print(story.__dict__)
-
+# Build our submission
 submission = reddit.Submission({
-        "title": "%s [X-Post From /r/%s]" % (story.__dict__['title'], subreddit_slug),
-        "url": story.__dict__['url']
-    }, r)
-
+    "title": "%s [X-Post From /r/%s]" % (story.title, subreddit_slug),
+    "url": story.url
+}, r)
 submission.subreddit = r.get_subreddit('serendipity')
 
-print(submission.__dict__)
-
+# Send it off to reddit
 response = submission.submit();
-print(response)
 
-print(submission.__dict__)
-
-comment_text = "[Original Submission by %s](%s) into [/r/%s](http://www.reddit.com/r/%s)" % (story.__dict__['author'], story.__dict__['permalink'], subreddit_slug, subreddit_slug)
-
-print("sleeping")
+# Sleep for a while so that we can let the submission go through before we add
+# our comment.
 time.sleep(3)
-print("done sleeping")
 
-print(submission.comment(comment_text))
+comment_text = (
+    "[Original Submission by %(author)s](%(permalink)s) into " + 
+    "[/r/%(subreddit_slug)s](http://www.reddit.com/r/%(subreddit_slug)s)" %
+    {
+        "author": story.author,
+        "permalink": story.permalink,
+        "subreddit_slug": subreddit_slug
+    }
+)
+
+submission.comment(comment_text)
