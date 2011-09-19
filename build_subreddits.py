@@ -1,14 +1,19 @@
 #!/usr/bin/env python
 # Requires lxml 2.0.3 and httplib2.  Public domain.
 
+# Builds a subreddits.pickle file for reading from subreddits.py
+# To be run every month or so to get new stats on subreddits.
+
 # Derived from subreddit scraper here: http://pastie.org/pastes/804537
+# This automatically filters nsfw subreddits because anonymous scraping
+# of /reddits/ does not include nsfw subreddits.
 
 first_uri = 'http://www.reddit.com/reddits/'
 
 import httplib2
 import urlparse
 import lxml.html.soupparser
-import json
+import cPickle as pickle
 
 def get_page(uri):
     print 'Processing %s' % uri
@@ -34,14 +39,12 @@ def fetch_reddits():
                 subscribers = reddit.xpath('.//span[@class=\'score unvoted\']/span[@class=\'number\']/text()')[0].split()[0].replace(',','')
             except IndexError:
                 subscribers = -1
-            is_nsfw = bool(len(reddit.xpath('.//img[@title=\'over18\']')) > 0)
             reddit_list.append(
                 {
                     "name": name,
                     "uri": uri,
                     "description": description,
-                    "subscribers": int(subscribers),
-                    "is_nsfw": is_nsfw
+                    "subscribers": int(subscribers)
                 }
             )
         try:
@@ -50,7 +53,6 @@ def fetch_reddits():
             current_uri = urlparse.urljoin(current_uri, next_link.attrib['href'])
         except:
             break
-        break
     return reddit_list
 
 if __name__ == '__main__':
@@ -58,4 +60,4 @@ if __name__ == '__main__':
     reddits.sort(key=lambda reddit: reddit["subscribers"])
     reddits.reverse()
 
-    print json.dumps(reddits)
+    pickle.dump(reddits, open('subreddits.pickle', 'w'))

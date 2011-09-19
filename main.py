@@ -11,10 +11,10 @@ except:
          "Make sure you create this file as a copy of settings.template.py.")
 
 # Pull all of the subreddits from subreddits.py that fit our criteria.
-serendipitous_subreddits = []
-for subreddit in subreddits:
-    if subreddit['subscribers'] > settings.MINIMUM_SUBSCRIBER_COUNT:
-        serendipitous_subreddits.append(subreddit)
+serendipitous_subreddits = [s for s in subreddits if s['subscribers'] > settings.MINIMUM_SUBSCRIBER_COUNT]
+# for subreddit in subreddits:
+#     if subreddit['subscribers'] > settings.MINIMUM_SUBSCRIBER_COUNT:
+#         serendipitous_subreddits.append(subreddit)
 
 # Pick out the random subreddit to pull a link form    
 subreddit      = random.choice(serendipitous_subreddits)
@@ -31,7 +31,7 @@ submission = reddit.Submission({
     "title": "%s [X-Post From /r/%s]" % (story.title, subreddit_slug),
     "url": story.url
 }, r)
-submission.subreddit = r.get_subreddit('serendipity')
+submission.subreddit = r.get_subreddit(settings.SUBREDDIT_NAME)
 
 # Send it off to reddit
 response = submission.submit();
