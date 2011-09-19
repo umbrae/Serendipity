@@ -4,3 +4,12 @@ posts it every few hours. If you want to increase your exposure to niche
 subreddits, or just your perspective on things on the web in general, 
 serendipity might help you do that. But it might not. It's a bot, after 
 all.
+
+TO RUN:
+
+Serendipity requires httplib2, OpenSSL.
+
+You'll likely want to stick these scripts in your cron, something to the effect of:
+
+0 */3 * * * python /path/to/serendipity/main.py # Post a serendipity link every 3 hours
+0 0 1 */3 * python /path/to/serendipity/build_subreddits.py # Rebuild our subreddits list every 3 months
