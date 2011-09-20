@@ -41,8 +41,8 @@ response = submission.submit();
 time.sleep(3)
 
 comment_text = (
-    "[Original Submission by %(author)s](%(permalink)s) into " + 
-    "[/r/%(subreddit_slug)s](http://www.reddit.com/r/%(subreddit_slug)s)" %
+    ("[Original Submission by %(author)s](%(permalink)s) into " + 
+    "[/r/%(subreddit_slug)s](http://www.reddit.com/r/%(subreddit_slug)s)") %
     {
         "author": story.author,
         "permalink": story.permalink,
