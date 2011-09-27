@@ -14,6 +14,7 @@ import httplib2
 import urlparse
 import lxml.html.soupparser
 import cPickle as pickle
+import os
 
 def get_page(uri):
     print 'Processing %s' % uri
@@ -59,5 +60,6 @@ if __name__ == '__main__':
     reddits = fetch_reddits()
     reddits.sort(key=lambda reddit: reddit["subscribers"])
     reddits.reverse()
-
-    pickle.dump(reddits, open('subreddits.pickle', 'w'))
+    
+    cwd = os.path.realpath(os.path.dirname(__file__))
+    pickle.dump(reddits, open(os.path.join(cwd, 'subreddits.pickle'), 'w'))
