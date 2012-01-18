@@ -7,7 +7,7 @@ all.
 
 TO RUN:
 
-Serendipity requires httplib2, OpenSSL.
+Serendipity requires httplib2 and OpenSSL. build_subreddits.py requires lxml as well.
 
 You'll likely want to stick these scripts in your cron, something to the effect of:
 
