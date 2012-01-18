@@ -3,6 +3,8 @@
 #
 # Added semi-broken create Submission support, just enough to add a link and
 # that's it. - Chris D
+# NOTE: THIS LIBRARY IS OUT OF DATE. You almost certainly want to use the
+# updated version of it at mellort's URL, above.
 import urllib
 import urllib2
 import cookielib
