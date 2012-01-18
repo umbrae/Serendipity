@@ -5,6 +5,14 @@ subreddits, or just your perspective on things on the web in general,
 serendipity might help you do that. But it might not. It's a bot, after 
 all.
 
+## BIG OL DISCLAIMER ##
+
+This is very much hacky-script level territory, and shouldn't be used for
+anything that really matters. If you want to do something with it, I'm glad,
+but it's just an ugly script. Really.
+
+## END BIG OL DISCLAIMER ##
+
 TO RUN:
 
 Serendipity requires httplib2 and OpenSSL. build_subreddits.py requires lxml as well.
