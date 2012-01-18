@@ -347,13 +347,13 @@ class Reddit(RedditObject):
     @require_login
     def _fetch_modhash(self):
         """Grab the current user's modhash. Basically, just fetch any
-        Reddit HTML page (can just get first 1200 chars) and search for
+        Reddit HTML page (can just get first 2400 chars) and search for
         'modhash: 1233asdfawefasdf', using re.search to grab the modhash.
         """
         req = self._Request(REDDIT_URL_FOR_MODHASH,
                            None, REDDIT_USER_AGENT)
-        # Should only need ~1200 chars to get the modhash
-        data = self._urlopen(req).read(1200)
+        # Should only need ~2400 chars to get the modhash
+        data = self._urlopen(req).read(2400)
         match = re.search(r"modhash[^,]*", data)
         self.modhash = eval(match.group(0).split(": ")[1])
 
