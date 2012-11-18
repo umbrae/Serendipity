@@ -13,3 +13,27 @@ MINIMUM_SUBSCRIBER_COUNT = 1000
 HOT_STORY_COUNT = 5
 
 VERSION = '1.1'
+
+DEFAULT_SUBREDDITS = frozenset([
+    'funny',
+    'pics',
+    'announcements',
+    'blog',
+    'askreddit',
+    'worldnews',
+    'gaming',
+    'todayilearned',
+    'politics',
+    'science',
+    'iama',
+    'wtf',
+    'videos',
+    'technology',
+    'music',
+    'atheism',
+    'adviceanimals',
+    'aww',
+    'movies',
+    'bestof',
+    'explainlikeimfive',
+])

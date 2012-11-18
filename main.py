@@ -1,6 +1,5 @@
 from subreddits import subreddits
 import random
-import re
 import time
 import praw
 
@@ -16,13 +15,14 @@ r.login(settings.REDDIT_LOGIN, settings.REDDIT_PASSWORD)
 # Pull all of the subreddits from subreddits.py that fit our criteria.
 serendipitous_subreddits = []
 for subreddit in subreddits:
-    if subreddit['subscribers'] > settings.MINIMUM_SUBSCRIBER_COUNT:
-        serendipitous_subreddits.append(subreddit)
+    slug = subreddit['uri'].strip('/').split('/')[-1].lower()
+    if (subreddit['subscribers'] > settings.MINIMUM_SUBSCRIBER_COUNT and
+        slug not in settings.DEFAULT_SUBREDDITS):
+            serendipitous_subreddits.append(subreddit)
 
 # Pick out the random subreddit to pull a link form
 subreddit = random.choice(serendipitous_subreddits)
-subreddit_slug = re.sub(r'http://www\.reddit\.com/r/([^/]+)/', r'\1',
-                        subreddit['uri'])
+subreddit_slug = subreddit['uri'].strip('/').split('/')[-1]
 
 # Get the top stories from that subreddit, and pick a random one
 stories = list(r.get_subreddit(subreddit_slug)
@@ -40,4 +40,9 @@ time.sleep(3)
 
 # Submit our comment onto our own submission
 submission.add_comment("[Original Submission by %s](%s) into /r/%s" %
-                       story.author, story.permalink, subreddit_slug)
+                       (story.author, story.permalink, subreddit_slug))
+
+feature_comment_text = ("This submission has been randomly featured in "
+                        "/r/serendipity, a bot-driven subreddit discovery "
+                        "engine. More here: %s" % submission.permalink)
+story.add_comment(feature_comment_text)
