@@ -34,9 +34,9 @@ submission = r.submit(settings.SUBREDDIT_NAME,
                      "%s [X-Post From /r/%s]" % (story.title, subreddit_slug),
                      url=story.url)
 
-# Sleep for a while so that we can let the submission go through before we add
-# our comment.
-time.sleep(3)
+# If it was a NSFW submission, mark the crosspost also
+if story.over_18:
+    submission.mark_as_nsfw()
 
 # Submit our comment onto our own submission
 submission.add_comment("[Original Submission by %s](%s) into /r/%s" %
