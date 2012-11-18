@@ -1,3 +1,4 @@
+
 /r/serendipity is a meta-subreddit meant to broaden the perspective of 
 its subscribers. It takes a popular entry from a random subreddit and 
 posts it every few hours. If you want to increase your exposure to niche 
@@ -5,19 +6,14 @@ subreddits, or just your perspective on things on the web in general,
 serendipity might help you do that. But it might not. It's a bot, after 
 all.
 
-## BIG OL DISCLAIMER ##
+## To Run
 
-This is very much hacky-script level territory, and shouldn't be used for
-anything that really matters. If you want to do something with it, I'm glad,
-but it's just an ugly script. Really.
-
-## END BIG OL DISCLAIMER ##
-
-TO RUN:
-
-Serendipity requires httplib2 and OpenSSL. build_subreddits.py requires lxml as well.
+Serendipity requires [PRAW](http://pypi.python.org/pypi/praw).
+`build_subreddits.py` requires `lxml` as well, if you want to update subreddits.
 
 You'll likely want to stick these scripts in your cron, something to the effect of:
 
+```
 0 */3 * * * python /path/to/serendipity/main.py # Post a serendipity link every 3 hours
-0 0 1 */3 * python /path/to/serendipity/build_subreddits.py # Rebuild our subreddits list every 3 months
+0 0 1 */3 * python /path/to/serendipity/build_subreddits.py # Rebuild subreddits list every 3 months
+```

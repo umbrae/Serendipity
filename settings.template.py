@@ -1,5 +1,4 @@
-# cat settings.py
-REDDIT_LOGIN    = ''
+REDDIT_LOGIN = ''
 REDDIT_PASSWORD = ''
 
 SUBREDDIT_NAME = ''
@@ -12,3 +11,5 @@ MINIMUM_SUBSCRIBER_COUNT = 1000
 # When Serendipity pulls a link, it will take a random one from the top N
 # stories so that it's not just the absolute-top link getting exposure.
 HOT_STORY_COUNT = 5
+
+VERSION = '1.1'
