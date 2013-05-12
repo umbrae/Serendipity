@@ -2,6 +2,7 @@ from subreddits import subreddits
 import random
 import time
 import praw
+from datetime import datetime, timedelta
 
 try:
     import settings
@@ -20,14 +21,23 @@ for subreddit in subreddits:
         slug not in settings.DEFAULT_SUBREDDITS):
             serendipitous_subreddits.append(subreddit)
 
-# Pick out the random subreddit to pull a link form
-subreddit = random.choice(serendipitous_subreddits)
-subreddit_slug = subreddit['uri'].strip('/').split('/')[-1]
+story = None
+while story is None:
+    # Pick out the random subreddit to pull a link form
+    subreddit = random.choice(serendipitous_subreddits)
+    subreddit_slug = subreddit['uri'].strip('/').split('/')[-1]
+    
+    # Get the top stories from that subreddit, and pick a random one
+    stories = list(r.get_subreddit(subreddit_slug)
+                    .get_hot(limit=settings.HOT_STORY_COUNT))
+    story = random.choice(stories)
 
-# Get the top stories from that subreddit, and pick a random one
-stories = list(r.get_subreddit(subreddit_slug)
-                .get_hot(limit=settings.HOT_STORY_COUNT))
-story = random.choice(stories)
+    # Ignore stories from bots, or that are older than 30 days.
+    submission_date = datetime.utcfromtimestamp(story.created_utc)
+    submission_age = datetime.utcnow() - submission_date
+    if story.author.name.lower().endswith('bot') or submission_age.days > 30:
+        story = None
+        continue        
 
 # Submit our crosspost
 submission = r.submit(settings.SUBREDDIT_NAME,
