@@ -14,7 +14,8 @@ HOT_STORY_COUNT = 5
 
 VERSION = '1.1'
 
-DEFAULT_SUBREDDITS = frozenset([
+BLACKLISTED_SUBREDDITS = frozenset([
+    # Defaults
     'funny',
     'pics',
     'announcements',
@@ -36,4 +37,9 @@ DEFAULT_SUBREDDITS = frozenset([
     'movies',
     'bestof',
     'explainlikeimfive',
+
+    # Mod Requests
+    'abrathatfits',
+    'transtimelines',
+    'firstimpression',
 ])

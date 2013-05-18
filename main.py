@@ -18,7 +18,7 @@ serendipitous_subreddits = []
 for subreddit in subreddits:
     slug = subreddit['uri'].strip('/').split('/')[-1].lower()
     if (subreddit['subscribers'] > settings.MINIMUM_SUBSCRIBER_COUNT and
-        slug not in settings.DEFAULT_SUBREDDITS):
+        slug not in settings.BLACKLISTED_SUBREDDITS):
             serendipitous_subreddits.append(subreddit)
 
 story = None
