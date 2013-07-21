@@ -42,4 +42,5 @@ BLACKLISTED_SUBREDDITS = frozenset([
     'abrathatfits',
     'transtimelines',
     'firstimpression',
+    'gonenatural',
 ])
