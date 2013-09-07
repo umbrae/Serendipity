@@ -1,3 +1,10 @@
-praw
-requests
+PyYAML==3.10
+ago==0.0.5
+nltk==2.0.4
+praw==2.1.5
 py-pretty==1
+requests==1.2.3
+six==1.4.1
+unicodecsv==0.9.4
+update-checker==0.6
+wsgiref==0.1.2
