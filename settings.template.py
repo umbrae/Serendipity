@@ -13,6 +13,7 @@ MINIMUM_SUBSCRIBER_COUNT = 1000
 HOT_STORY_COUNT = 5
 
 VERSION = '1.2a'
+UA = 'Serendipity %s' % VERSION
 
 BLACKLISTED_SUBREDDITS = frozenset([
     # Defaults
