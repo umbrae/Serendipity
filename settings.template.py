@@ -12,7 +12,7 @@ MINIMUM_SUBSCRIBER_COUNT = 1000
 # stories so that it's not just the absolute-top link getting exposure.
 HOT_STORY_COUNT = 5
 
-VERSION = '1.1'
+VERSION = '1.2a'
 
 BLACKLISTED_SUBREDDITS = frozenset([
     # Defaults
