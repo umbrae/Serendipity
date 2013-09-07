@@ -105,17 +105,17 @@ class SubredditStats(object):
     def get_avg_reading_level(self):
         reading_levels = []
         for c in self.cached_comments:
-            if not c.body:
+            if not c.body or not len(c.body.split()):
                 continue
             try:
                 reading_level = flesch_kincaid.grade_level(c.body)
                 reading_levels.append(reading_level)
-            except:
+            except Exception as e:
+                print "Warning: flesch_kincaid failure: %s" % repr(e)
                 continue
 
         if len(reading_levels) == 0:
             return 0
-        
         return avg(reading_levels)
 
     def get_top_links(self):
