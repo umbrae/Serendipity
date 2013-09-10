@@ -46,4 +46,5 @@ BLACKLISTED_SUBREDDITS = frozenset([
     'firstimpression',
     'gonenatural',
     'subredditdrama',
+    'suicidewatch',
 ])
