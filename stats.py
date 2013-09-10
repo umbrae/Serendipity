@@ -108,7 +108,8 @@ class SubredditStats(object):
             if not c.body or not len(c.body.split()):
                 continue
             try:
-                reading_level = flesch_kincaid.grade_level(c.body)
+                body_ascii = c.body.decode('utf-8').encode("ascii","ignore")
+                reading_level = flesch_kincaid.grade_level(body_ascii)
                 reading_levels.append(reading_level)
             except Exception as e:
                 print "Warning: flesch_kincaid failure: %s" % repr(e)

@@ -13,7 +13,7 @@ except:
          "Make sure you create this file as a copy of settings.template.py.")
 
 def link_display(s):
-    return "[%s (%d points by /u/%s)](%s)" % (s.title, s.score, s.author.name,
+    return "[%s (%d points by /u/%s)](%s)" % (s.title, s.score, s.author.name if s.author else "Unknown",
                                               s.permalink)
 
 def domain_display(d):
