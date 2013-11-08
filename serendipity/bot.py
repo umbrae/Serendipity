@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 from __future__ import unicode_literals
-from subreddits import subreddits
-from stats import SubredditStats
+from .subreddits import subreddits
+from .stats import SubredditStats
 import ago
 import random
 import praw

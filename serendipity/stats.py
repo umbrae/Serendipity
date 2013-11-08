@@ -6,7 +6,6 @@ from util import flesch_kincaid
 import re
 import praw
 
-
 try:
     import settings
 except:

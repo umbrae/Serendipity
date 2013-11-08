@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-from bot import SerendipityBot
+from serendipity.bot import SerendipityBot
 import argparse
 
 def main():
