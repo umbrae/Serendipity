@@ -2,10 +2,11 @@
 from __future__ import unicode_literals
 from .subreddits import subreddits
 from .stats import SubredditStats
-import ago
-import random
-import praw
 from datetime import datetime
+import ago
+import os
+import praw
+import random
 
 try:
     import settings
@@ -118,7 +119,8 @@ class SerendipityBot(object):
         age = ago.human(overview['create_date'], precision=1, past_tense='{}')
         subscribers_per_mod = overview['subscribers'] / len(overview['mods'])
 
-        with open("templates/summary.tpl") as f:
+        cwd = os.path.realpath(os.path.dirname(__file__))
+        with open(os.path.join(cwd, 'templates/summary.tpl')) as f:
             summary_tpl = f.read()
             summary = summary_tpl.format(
                 story_author = self.chosen_story.author,
