@@ -2,8 +2,8 @@
 from __future__ import division
 from datetime import datetime
 from collections import Counter
+from util import flesch_kincaid
 import re
-import flesch_kincaid
 import praw
 
 
