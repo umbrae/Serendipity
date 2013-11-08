@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*- 
 from __future__ import division
 from datetime import datetime
 from collections import Counter
-from operator import attrgetter
+import re
 import flesch_kincaid
 import praw
+
 
 try:
     import settings
@@ -105,10 +107,10 @@ class SubredditStats(object):
     def get_avg_reading_level(self):
         reading_levels = []
         for c in self.cached_comments:
-            if not c.body or not len(c.body.split()):
+            if not c.body or not re.match('\w', c.body):
                 continue
             try:
-                body_ascii = c.body.decode('utf-8').encode("ascii","ignore")
+                body_ascii = c.body.encode("ascii",errors="ignore")
                 reading_level = flesch_kincaid.grade_level(body_ascii)
                 reading_levels.append(reading_level)
             except Exception as e:
