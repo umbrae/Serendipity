@@ -42,13 +42,11 @@ class SerendipityBot(object):
 
     def _dbg(self, s):
         """ Print this string if verbose mode is enabled. """
-
         if self.verbose:
             print(s)
 
     def _setup_praw(self):
         """ Set up our praw client. Uses settings file for credentials. """
-
         self.r = praw.Reddit(user_agent=settings.UA)
         self.r.login(settings.REDDIT_LOGIN, settings.REDDIT_PASSWORD)
         self.r.config.decode_html_entities = True
