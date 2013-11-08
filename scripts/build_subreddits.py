@@ -62,4 +62,4 @@ if __name__ == '__main__':
     reddits.reverse()
     
     cwd = os.path.realpath(os.path.dirname(__file__))
-    pickle.dump(reddits, open(os.path.join(cwd, 'subreddits.pickle'), 'w'))
+    pickle.dump(reddits, open(os.path.join(cwd, '../serendipity/subreddits.pickle'), 'w'))

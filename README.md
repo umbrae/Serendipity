@@ -15,5 +15,5 @@ You'll likely want to stick these scripts in your cron, something to the effect 
 
 ```
 0 */3 * * * python /path/to/serendipity/main.py # Post a serendipity link every 3 hours
-0 0 1 */3 * python /path/to/serendipity/build_subreddits.py # Rebuild subreddits list every 3 months
+0 0 1 */3 * python /path/to/serendipity/scripts/build_subreddits.py # Rebuild subreddits list every 3 months
 ```
