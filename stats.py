@@ -86,7 +86,7 @@ class SubredditStats(object):
         total_count = sum(self.domain_counter.values())
         breakdown = []
         for domain, count in self.domain_counter.most_common(num):
-            breakdown.append((domain, count/total_count))
+            breakdown.append({"domain": domain, "percent": count/total_count})
         return breakdown
 
     def get_avg_ratio(self):

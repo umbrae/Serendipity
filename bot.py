@@ -14,12 +14,14 @@ except:
          "Make sure you create this file as a copy of settings.template.py.")
 
 def link_display(s):
+    """ Given a story, format it nicely with markdown """
     author_name = s.author.name if s.author else "Unknown"
     return "[%s (%d points by /u/%s)](%s)" % (s.title, s.score, author_name,
                                               s.permalink)
 
 def domain_display(d):
-    return "%s **(%0.f%%)**" % (d[0], d[1]*100.0)
+    """ Given a domain from `get_domain_breakdown`, format with markdown """
+    return "%s **(%0.f%%)**" % (d["domain"], d["percent"]*100.0)
 
 class SerendipityException(Exception):
     pass
@@ -39,15 +41,23 @@ class SerendipityBot(object):
         self._setup_praw()
 
     def _dbg(self, s):
+        """ Print this string if verbose mode is enabled. """
+
         if self.verbose:
             print(s)
 
     def _setup_praw(self):
+        """ Set up our praw client. Uses settings file for credentials. """
+
         self.r = praw.Reddit(user_agent=settings.UA)
         self.r.login(settings.REDDIT_LOGIN, settings.REDDIT_PASSWORD)
         self.r.config.decode_html_entities = True
 
     def _choose_subreddit(self):
+        """ Choose a random subreddit out of our subreddits list.
+
+        If `force_subreddit` was specified, use that instead.
+        """
         if self.force_subreddit is not None:
             self.slug = self.force_subreddit
         else:
@@ -57,7 +67,12 @@ class SerendipityBot(object):
         self.chosen_subreddit = self.r.get_subreddit(self.slug)
         self.stats = SubredditStats(self.slug, self.r)
  
-    def _choose_post(self):
+    def _choose_story(self):
+        """ Choose the story to highlight from the chosen subreddit.
+
+        A chosen story must be < 30 days old and we do a little checking to make
+        sure we're not featuring a bot.
+        """
         if not self.chosen_subreddit:
             self._choose_subreddit()
 
@@ -87,11 +102,16 @@ class SerendipityBot(object):
         self._dbg("Exhausted all top stories in /r/%s, choosing new " 
                   "subreddit." % self.slug)
         self._choose_subreddit()
-        return self._choose_post()
+        return self._choose_story()
 
     def _generate_summary(self):
-        self._dbg("Generating summary for crosspost “%s”" %
-                  self.chosen_story.title)
+        """ The subreddit summary is posted as a comment to the crosspost.
+
+        Makes use of stats to do most of the heavy lifting, just reads the
+        template and formats for the most part.
+        """
+        self._dbg("Generating summary for crosspost “%s” in /r/%s" %
+                  (self.chosen_story.title, self.slug))
 
         overview = self.stats.get_overview()
         top_links = self.stats.get_top_links()
@@ -156,7 +176,10 @@ class SerendipityBot(object):
 
     def run(self):
         self._choose_subreddit()
-        self._choose_post()
+        self._choose_story()
+
+        # Generate summary before submitting story so that if summary generation
+        # fails we don't submit the post. Also useful for dry runs.
         self._generate_summary()
 
         if self.dry_run:
