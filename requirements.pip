@@ -7,4 +7,4 @@ six
 unicodecsv
 py-pretty==1
 wsgiref==0.1.2
-update-checke
+update-checker==0.6
