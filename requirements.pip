@@ -4,7 +4,6 @@ nltk==2.0.4
 praw
 requests
 six
-unicodecsv
 py-pretty==1
 wsgiref==0.1.2
 update-checker==0.6
