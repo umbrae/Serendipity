@@ -131,7 +131,7 @@ class SerendipityBot(object):
                 num_mods = len(overview['mods']),
                 subscribers_per_mod = subscribers_per_mod,
                 top_domains = top_domains,
-                avg_ratio = self.stats.get_avg_ratio(),
+                # avg_ratio = self.stats.get_avg_ratio(),
                 avg_over_18 = self.stats.get_avg_over_18(),
                 avg_karma = self.stats.get_avg_score(),
                 avg_num_comments = self.stats.get_avg_num_comments(),

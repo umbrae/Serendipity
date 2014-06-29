@@ -89,7 +89,7 @@ class SubredditStats(object):
         return breakdown
 
     def get_avg_ratio(self):
-        return avg([l.ups / (l.ups + l.downs) for l in self.cached_hot])
+        return avg([l.upvote_ratio for l in self.cached_hot])
 
     def get_avg_score(self):
         return avg([l.score for l in self.cached_hot])

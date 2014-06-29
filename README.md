@@ -23,3 +23,5 @@ the effect of:
 0 */3 * * * python /path/to/serendipity/main.py # Post a serendipity link every 3 hours
 0 0 1 */3 * python /path/to/serendipity/scripts/build_subreddits.py # Rebuild subreddits list every 3 months
 ```
+
+# Todo: Mention ntlk.download (all-corpora for simplicity)

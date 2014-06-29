@@ -10,7 +10,6 @@
 
 # Popular Posts Summary
 * Top domains: {top_domains}
-* Average ups/downs ratio: **{avg_ratio:0.2%}**
 * % NSFW: **{avg_over_18:0.0%}**
 * Average Score: **{avg_karma:0.0f}**
 
