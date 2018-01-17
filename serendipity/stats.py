@@ -39,7 +39,7 @@ class SubredditStats(object):
             r = praw.Reddit(user_agent=settings.UA)
             r.login(settings.REDDIT_LOGIN, settings.REDDIT_PASSWORD)
         self.r = r
-        self.sr = self.r.get_subreddit(self.slug)
+        self.sr = self.r.subreddit(self.slug)
         self._cached_hot = None
         self._cached_comments = None
         self._domain_counter = None
@@ -50,7 +50,7 @@ class SubredditStats(object):
             be iterating over it quite a few times.
         """
         if self._cached_hot is None:
-            self._cached_hot = list(self.sr.get_hot(limit=self.LINKS_LIMIT))
+            self._cached_hot = list(self.sr.hot(limit=self.LINKS_LIMIT))
         return self._cached_hot
 
     @property
@@ -59,7 +59,7 @@ class SubredditStats(object):
             because we'll be iterating over it quite a few times.
         """
         if self._cached_comments is None:
-            self._cached_comments = list(self.sr.get_comments(limit=self.COMMENTS_LIMIT))
+            self._cached_comments = list(self.sr.comments())[:self.COMMENTS_LIMIT]
         return self._cached_comments
 
     @property
@@ -73,7 +73,7 @@ class SubredditStats(object):
         return self._domain_counter
 
     def get_overview(self):
-        mods = [u.name for u in self.sr.get_moderators()]
+        mods = [u.name for u in self.sr.moderator()]
 
         return {
             "subscribers": self.sr.subscribers,
@@ -122,8 +122,8 @@ class SubredditStats(object):
 
     def get_top_links(self):
         top = {}
-        _add_first_unique(top, 'all_time', self.sr.get_top_from_all(limit=1))
-        _add_first_unique(top, 'month', self.sr.get_top_from_month(limit=2))
-        _add_first_unique(top, 'week', self.sr.get_top_from_week(limit=3))
+        _add_first_unique(top, 'all_time', self.sr.top(limit=1))
+        _add_first_unique(top, 'month', self.sr.top('month', limit=2))
+        _add_first_unique(top, 'week', self.sr.top('week', limit=3))
 
         return top

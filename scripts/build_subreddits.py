@@ -50,7 +50,7 @@ def fetch_reddits():
             )
         try:
             print "Processed %s reddits." % len(reddit_list)
-            next_link = page.xpath('//p[@class=\'nextprev\']/a[contains(text(),\'next\')]')[0]
+            next_link = page.xpath('//span[@class=\'nextprev\']//a[contains(text(),\'next\')]')[0]
             current_uri = urlparse.urljoin(current_uri, next_link.attrib['href'])
         except:
             break

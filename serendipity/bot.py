@@ -48,8 +48,13 @@ class SerendipityBot(object):
 
     def _setup_praw(self):
         """ Set up our praw client. Uses settings file for credentials. """
-        self.r = praw.Reddit(user_agent=settings.UA)
-        self.r.login(settings.REDDIT_LOGIN, settings.REDDIT_PASSWORD)
+        self.r = praw.Reddit(
+            user_agent=settings.UA,
+            client_id=settings.CLIENT_ID,
+            client_secret=settings.CLIENT_SECRET,
+            username=settings.REDDIT_LOGIN,
+            password=settings.REDDIT_PASSWORD,
+        )
         self.r.config.decode_html_entities = True
 
     def _choose_subreddit(self):
@@ -63,7 +68,7 @@ class SerendipityBot(object):
             subreddit = random.choice(subreddits)
             self.slug = subreddit['uri'].strip('/').split('/')[-1]
 
-        self.chosen_subreddit = self.r.get_subreddit(self.slug)
+        self.chosen_subreddit = self.r.subreddit(self.slug)
         self.stats = SubredditStats(self.slug, self.r)
  
     def _choose_story(self):
@@ -76,7 +81,7 @@ class SerendipityBot(object):
             self._choose_subreddit()
 
         stories = list(self.chosen_subreddit
-                           .get_hot(limit=settings.HOT_STORY_COUNT))
+                           .hot(limit=settings.HOT_STORY_COUNT))
         while len(stories) > 0:
             story = random.choice(stories)
 
@@ -85,7 +90,7 @@ class SerendipityBot(object):
             story_age = datetime.utcnow() - story_date
             is_bot = story.author.name.lower().endswith('bot')
 
-            if is_bot or story_age.days > 30:
+            if is_bot or story_age.days > 30 or story.stickied:
                 self._dbg("Following story is ineligible, skipping: “%s”" %
                           link_display(story))
                 stories.remove(story)
@@ -150,12 +155,12 @@ class SerendipityBot(object):
 
         title = "%s [X-Post From /r/%s]" % (self.chosen_story.title,
                                             self.slug)
-        self.story = self.r.submit(settings.SUBREDDIT_NAME, title,
+        self.story = self.r.subreddit(settings.SUBREDDIT_NAME).submit(title,
                                    url=self.chosen_story.url)
 
         # If it was a NSFW submission, mark the crosspost also
         if self.chosen_story.over_18:
-            self.story.mark_as_nsfw()
+            self.story.mod.nsfw()
 
     def _submit_summary(self):
         self._dbg("Submitting subreddit summary.")
@@ -163,7 +168,7 @@ class SerendipityBot(object):
         if not self.summary:
             self._generate_summary()
 
-        self.story.add_comment(self.summary)
+        self.story.reply(self.summary)
 
     def _submit_cross_comment(self):
         self._dbg("Submitting cross comment.")
@@ -172,7 +177,7 @@ class SerendipityBot(object):
                         "/r/serendipity, a bot-driven subreddit discovery "
                         "engine. More here: %s" % self.story.permalink)
 
-        self.chosen_story.add_comment(feature_text)
+        self.chosen_story.reply(feature_text)
 
     def run(self):
         self._choose_subreddit()

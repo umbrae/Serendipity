@@ -1,5 +1,7 @@
 REDDIT_LOGIN = ''
 REDDIT_PASSWORD = ''
+CLIENT_ID = ''
+CLIENT_SECRET = ''
 
 SUBREDDIT_NAME = ''
 
@@ -12,7 +14,7 @@ MINIMUM_SUBSCRIBER_COUNT = 1000
 # stories so that it's not just the absolute-top link getting exposure.
 HOT_STORY_COUNT = 5
 
-VERSION = '1.2a'
+VERSION = '1.3'
 UA = 'Serendipity %s' % VERSION
 
 BLACKLISTED_SUBREDDITS = frozenset([
